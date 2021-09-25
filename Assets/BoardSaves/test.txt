@@ -1,0 +1,12 @@
+Star	Drop	Drop	Empty	Empty	Empty	
+Green	Heart	Heart	Red	Green	Ring	
+Red	Heart	Green	Ring	Ring	Green	
+Drop	Ring	Heart	Green	Heart	Red	
+Green	Red	Star	Heart	Ring	Drop	
+Drop	Red	Ring	Drop	Star	Green	
+Ring	Drop	Red	Drop	Red	Drop	
+Star	Drop	Star	Ring	Ring	Star	
+Red	Red	Green	Ring	Red	Star	
+Drop	Drop	Red	Green	Heart	Drop	
+Drop	Drop	Heart	Heart	Ring	Drop	
+Ring	Heart	Star	Star	Drop	Red	
