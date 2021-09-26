@@ -41,6 +41,9 @@ TextureImporter:
   - first:
       213: -5282956529547753744
     second: Cereal
+  - first:
+      213: -6325109536858745813
+    second: BowlCornerTop
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -381,7 +384,7 @@ TextureImporter:
         width: 198
         height: 532
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -402,7 +405,7 @@ TextureImporter:
         width: 187
         height: 532
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -410,6 +413,27 @@ TextureImporter:
       bones: []
       spriteID: 0f6c974d60b2fa6b0800000000000000
       internalID: -5282956529547753744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowlCornerTop
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 642
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b24591a5362b838a0800000000000000
+      internalID: -6325109536858745813
       vertices: []
       indices: 
       edges: []
