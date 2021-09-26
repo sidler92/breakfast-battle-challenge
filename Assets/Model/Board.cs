@@ -17,6 +17,38 @@ public class Board
 
     public HashSet<Tile> TilesToBeCleared { get; protected set; }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+    /*
+    
+    linked list of "rows" -> a row is just an array of size width
+    TODO: update GetTileAt (should not be expensive with get previous -> next of "row"
+
+    each time step we increased a value -> this tells us position on the board
+
+    is this value dependent on current y?
+     -> this value goes from 0 to 1 -> if it reaches 1 it should increased y by 1 (and reset back to 0)
+    ( this means that each y will not change position too much ? probably?)
+
+    --> this value gets updated with deltatime from the board controller -> you can press button to speed that up
+
+    --> add first new row -> update dict
+    --> remove last empty row -> update dict
+
+    if rows.count > Height+1? we at top -> check if last row is empty -> remove -> if not -> we lose
+    we can probably check this every time we reach 1 on the (position value)
+
+
+
+
+
+    */
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
     Action<Tile> cbTileChanged;
     Action cbClearStarted;

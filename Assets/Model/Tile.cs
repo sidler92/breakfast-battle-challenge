@@ -24,6 +24,7 @@ public class Tile
     }
 
     public Board board { get; protected set; }
+    public Row row { get; protected set; }
 
     public int X { get; protected set; }
     public int Y { get; protected set; }
@@ -33,6 +34,16 @@ public class Tile
     public Tile(Board board, int x, int y)
     {
         this.board = board;
+        X = x;
+        Y = y;
+
+        // FIXME dont use random here, board should manage how th tiles should look
+        // Type = (TileType)(UnityEngine.Random.Range(0, 6) + 1);
+    }
+    public Tile(Board board, Row row, int x, int y)
+    {
+        this.board = board;
+        this.row = row;
         X = x;
         Y = y;
 

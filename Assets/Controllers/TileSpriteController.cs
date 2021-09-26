@@ -13,6 +13,17 @@ public class TileSpriteController : MonoBehaviour
     public Sprite crossSprite;
 
 
+    /*
+
+
+    tiles get value "time Before next y" -> the position of the gameobject is y + this value
+    this should get updated on tile changeD? (but thats alot -> maybe decouple and do it in on update of tilespritecontroller) 
+
+
+
+    */
+
+
     Dictionary<Tile, GameObject> tileGameObjectMap;    
 
     Board board { get { return BoardController.Instance.board; } }
