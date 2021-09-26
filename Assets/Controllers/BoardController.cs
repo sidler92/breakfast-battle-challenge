@@ -44,6 +44,8 @@ public class BoardController : MonoBehaviour
         currentPointText.text = ("currentclearPoints: " + board.CurrentClearPoints.ToString());
 
         timerText.text = ("ComboTimer: " + ComboTimer.ToString());
+
+        board.UpdateBoard(Time.deltaTime);
     } 
 
 

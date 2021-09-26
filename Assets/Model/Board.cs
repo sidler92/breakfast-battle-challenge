@@ -16,6 +16,11 @@ public class Board
 
     public int Width { get; protected set; }
     public int Height { get; protected set; }
+    public float TimeSinceLastRow { get; protected set; }
+    public float RowOffset
+    {
+        get { return TimeSinceLastRow/10; }
+    }
 
     public HashSet<Tile> TilesToBeCleared { get; protected set; }
 
@@ -71,23 +76,6 @@ public class Board
     {
         CreateBoard(width, height);
     }
-    /*void CreateBoard(int width, int height)
-    {
-        CurrentClearPoints = 0;
-
-        Width = width;
-        Height = height;
-
-        TilesToBeCleared = new HashSet<Tile>();
-
-        InstantiateTiles(Width, Height);
-
-        Debug.Log("World created with " + (Width * Height) + " tiles.");
-
-        ChangeTilesWithoutClears(6);
-
-        cursor = new Cursor(this);
-    }*/
 
     void CreateBoard(int width, int height)
     {
@@ -103,6 +91,8 @@ public class Board
         Debug.Log("and the rows have " + (newTiles.First.Value.tiles.Length) + "tiles each");
 
         ChangeTilesWithoutClears(6);
+
+        TimeSinceLastRow = 0;
 
         cursor = new Cursor(this);
     }
@@ -121,46 +111,6 @@ public class Board
         Debug.Log("New Tiles Instantiated");
     }
 
-    /*void InstantiateTiles(int width, int height)
-    {
-        tiles = new Tile[Width, Height];
-
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                tiles[x, y] = new Tile(this, x, y);
-                tiles[x, y].RegisterTileChanged(OnTileChanged); //register callback ty
-            }
-        }
-        Debug.Log("Tiles Instantiated");
-    }*/
-
-    /*void ChangeTilesWithoutClears(int height)
-    {
-        // hash set of all valid types (without empty)
-        HashSet<TileType> validTypes = new HashSet<TileType>(Enum.GetValues(typeof(TileType)).Cast<TileType>().ToList());
-        validTypes.Remove(TileType.Empty);
-        // hash set of all adjacent types
-        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < Width; x++)
-            {
-                // get all adjacent types
-                adjacentTypes.Clear();
-                adjacentTypes.UnionWith(AdjacentTypes(tiles[x, y]));
-
-                // set type of current tile to one that is in valid types but not in adjacent types -> never have 2 of the same next to eachother
-                HashSet<TileType> noDupeTypes = new HashSet<TileType>();
-                noDupeTypes.UnionWith(validTypes);
-                noDupeTypes.ExceptWith(adjacentTypes);
-                tiles[x, y].Type = noDupeTypes.ElementAt(UnityEngine.Random.Range(0, noDupeTypes.Count));
-            }
-        }
-    }*/
-
     void ChangeTilesWithoutClears(int height)
     {
         // hash set of all valid types (without empty)
@@ -171,6 +121,8 @@ public class Board
 
         foreach (Row row in newTiles)
         {
+            if (row.Y >= height)
+                break;
             for (int x = 0; x < Width; x++)
             {
                 // get all adjacent types
@@ -182,7 +134,7 @@ public class Board
                 noDupeTypes.UnionWith(validTypes);
                 noDupeTypes.ExceptWith(adjacentTypes);
                 row.GetTileAt(x).Type = noDupeTypes.ElementAt(UnityEngine.Random.Range(0, noDupeTypes.Count));
-            }
+            }            
         }
     }
 
@@ -205,35 +157,6 @@ public class Board
         return adjacentTypes;
     }
 
-    /*HashSet<TileType> AdjacentTypes(Tile tile)
-    {
-        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
-        int x = tile.X;
-        int y = tile.Y;
-
-        if (x > 0)
-            adjacentTypes.Add(GetTileAt(x - 1, y).Type);
-        if (x < Width - 1) 
-            adjacentTypes.Add(GetTileAt(x + 1, y).Type);
-        if (y > 0)
-            adjacentTypes.Add(GetTileAt(x, y - 1).Type);
-        if (y < Height - 1) 
-            adjacentTypes.Add(GetTileAt(x, y + 1).Type);
-
-        return adjacentTypes;
-    }*/
-
-    /*public void ChangeTiles(TileType[,] types)
-    {
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                tiles[x, y].Type = types[x, y];
-            }
-        }
-    }*/
-
     public void ChangeTiles(TileType[,] types)
     {
         int y = 0;
@@ -244,6 +167,19 @@ public class Board
                 row.GetTileAt(x).Type = types[x, y];
             }
             y++;
+        }
+    }
+
+    public void UpdateBoard(float deltaTime)
+    {
+        TimeSinceLastRow += deltaTime;
+        if(TimeSinceLastRow > 10f)
+        {
+            TimeSinceLastRow = 0;
+            // All tiles Y++
+            // add new row at y=-1
+            // check if top row is empty -> if not it is probably game over
+
         }
     }
 
@@ -322,19 +258,10 @@ public class Board
     // ---------------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------------
 
-    /*public Tile GetTileAt(int x, int y)
-    {
-        if (x >= Width || x < 0 || y >= Height || y < 0)
-        {
-            return null;
-        }
-
-        return tiles[x, y];
-    }*/
-
     public Tile GetTileAt(int x, int y)
     {
-        newTiles.Find(y);
+        Row row = newTiles.Where(item => item.Y == y).FirstOrDefault();
+        return row.GetTileAt(x);
     }
 
 
@@ -409,23 +336,25 @@ public class Board
         // set the column to not include empty tiles -> like removing empty tiles
         for (int y = 0; y < Height; y++)
         {
+            Tile currentTile = GetTileAt(x, y);
             // ass long there are more tiles in fillTiles
             if (y < fillTiles.Count)
             {
-                if (tiles[x, y].Type != fillTiles[y].Type)
+                
+                if (currentTile.Type != fillTiles[y].Type)
                     hasChanged = true;
-                tiles[x, y].Type = fillTiles[y].Type;
+                currentTile.Type = fillTiles[y].Type;
             }
             else
             {
-                tiles[x, y].Type = TileType.Empty;
+                currentTile.Type = TileType.Empty;
             }
 
 
             // add the current tile  to changed tiles if it has changed and if it is not empty
-            if (hasChanged && tiles[x, y].Type != TileType.Empty)
+            if (hasChanged && currentTile.Type != TileType.Empty)
             {
-                changedTiles.Add(tiles[x, y]);
+                changedTiles.Add(currentTile);
             }
         }
         return changedTiles;

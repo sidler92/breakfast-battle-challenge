@@ -24,7 +24,6 @@ public class Row
 
     public void SetRowNode(LinkedListNode<Row> rowNode)
     {
-        Debug.Log("Set Rownode to " + rowNode);
         this.rowNode = rowNode;
         // also set rownode to each tile
         foreach (Tile tile in tiles)
@@ -70,38 +69,4 @@ public class Row
         // stuff
         cbTileChanged(t);
     }
-
-    public override bool Equals(object obj)
-    {
-        if (!(obj is int objAsY))
-        {
-            return false;
-        }
-
-        return objAsY == Y; ;
-    }
-
-    public override int GetHashCode()
-    {
-        return Y;
-    }
-    /*public override bool Equals(object obj)
-{
-   if(!(obj is int objAsY))
-   {
-       return false;
-   }
-
-   return objAsY == Y;
-}
-
-public override int GetHashCode()
-{
-   //eturn base.GetHashCode();
-   unchecked
-   {
-       return this.Y;
-   }
-
-}*/
 }

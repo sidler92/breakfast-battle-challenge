@@ -37,6 +37,11 @@ public class TileSpriteController : MonoBehaviour
         RegisterCallbackFunctions();
     }
 
+    void Update()
+    {
+        this.transform.localPosition = new Vector3(0, board.RowOffset);
+    }
+
     void RegisterCallbackFunctions()
     {
         board.RegisterTileChanged(OnTileChanged);
