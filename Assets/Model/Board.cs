@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class Board
 {
@@ -45,14 +46,59 @@ public class Board
 
         TilesToBeCleared = new HashSet<Tile>();
 
-        instantiateTiles(Width, Height);
+        InstantiateTiles(Width, Height);
 
         Debug.Log("World created with " + (Width * Height) + " tiles.");
+
+        ChangeTilesWithoutClears(6);
 
         cursor = new Cursor(this);
     }
 
-    void instantiateTiles(int width, int height)
+    void ChangeTilesWithoutClears(int height)
+    {
+        // hash set of all valid types (without empty)
+        HashSet<TileType> validTypes = new HashSet<TileType>(Enum.GetValues(typeof(TileType)).Cast<TileType>().ToList());
+        validTypes.Remove(TileType.Empty);
+        // hash set of all adjacent types
+        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                // get all adjacent types
+                adjacentTypes.Clear();
+                adjacentTypes.UnionWith(AdjacentTypes(tiles[x, y]));
+
+                // set type of current tile to one that is in valid types but not in adjacent types -> never have 2 of the same next to eachother
+                HashSet<TileType> noDupeTypes = new HashSet<TileType>();
+                noDupeTypes.UnionWith(validTypes);
+                noDupeTypes.ExceptWith(adjacentTypes);
+                tiles[x, y].Type = noDupeTypes.ElementAt(UnityEngine.Random.Range(0, noDupeTypes.Count));
+            }
+        }
+    }
+
+    HashSet<TileType> AdjacentTypes(Tile tile)
+    {
+        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
+        int x = tile.X;
+        int y = tile.Y;
+
+        if (x > 0)
+            adjacentTypes.Add(GetTileAt(x - 1, y).Type);
+        if (x < Width - 1) 
+            adjacentTypes.Add(GetTileAt(x + 1, y).Type);
+        if (y > 0)
+            adjacentTypes.Add(GetTileAt(x, y - 1).Type);
+        if (y < Height - 1) 
+            adjacentTypes.Add(GetTileAt(x, y + 1).Type);
+
+        return adjacentTypes;
+    }
+
+    void InstantiateTiles(int width, int height)
     {
         tiles = new Tile[Width, Height];
 
@@ -64,6 +110,7 @@ public class Board
                 tiles[x, y].RegisterTileChanged(OnTileChanged); //register callback ty
             }
         }
+        Debug.Log("Tiles Instantiated");
     }
 
     public void ChangeTiles(TileType[,] types)
@@ -333,7 +380,7 @@ public class Board
     {
         foreach (Tile tile in TilesToBeCleared)
         {
-            tile.clearType();
+            tile.ClearType();
         }
 
         // remove old cleared tiles from this

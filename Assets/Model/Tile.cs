@@ -18,10 +18,8 @@ public class Tile
             _type = value;
             // call the callback and let things know we've changed.
 
-            if(cbTileChanged != null && oldType != _type)
-            {
-                cbTileChanged(this);
-            }
+            if (oldType != _type)
+                OnTileChanged(this);
         } 
     }
 
@@ -38,8 +36,8 @@ public class Tile
         X = x;
         Y = y;
 
-        // FIXME
-        Type = (TileType)(UnityEngine.Random.Range(0, 6) + 1);
+        // FIXME dont use random here, board should manage how th tiles should look
+        // Type = (TileType)(UnityEngine.Random.Range(0, 6) + 1);
     }
     public Tile(Board board, int x, int y, TileType type)
     {
@@ -65,7 +63,7 @@ public class Tile
         return tiles;
     }
 
-    public void clearType()
+    public void ClearType()
     {
         this.Type = TileType.Empty;
     }
