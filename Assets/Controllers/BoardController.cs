@@ -199,4 +199,13 @@ public class BoardController : MonoBehaviour
         // it is stil possible to move tiles before them dropping down -> intended?
         board.UpdateColumns();
     }
+
+    void test_function()
+    {
+        // this is a test function
+        int a = 0;
+
+        print(a);
+
+    }
 }
