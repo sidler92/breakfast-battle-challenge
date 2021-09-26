@@ -25,7 +25,22 @@ TextureImporter:
     second: CrossSprite
   - first:
       213: -2094062241307398082
-    second: BBC_Tileset_One_1k_rgba_7
+    second: BorderLeft
+  - first:
+      213: -7699412210218765111
+    second: BorderTop
+  - first:
+      213: -8903708767992423758
+    second: BorderRight
+  - first:
+      213: -5750825813629323544
+    second: Background
+  - first:
+      213: 8872382608507626968
+    second: Bowl
+  - first:
+      213: -5282956529547753744
+    second: Cereal
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -274,13 +289,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BBC_Tileset_One_1k_rgba_7
+      name: BorderLeft
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 500
-        height: 890
+        width: 50
+        height: 800
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,6 +305,111 @@ TextureImporter:
       bones: []
       spriteID: e3070518c7560f2e0800000000000000
       internalID: -2094062241307398082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BorderTop
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 800
+        width: 504
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c4fa965361362590800000000000000
+      internalID: -7699412210218765111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BorderRight
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 0
+        width: 50
+        height: 800
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bad744ac0caf6480800000000000000
+      internalID: -8903708767992423758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Background
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 0
+        width: 446
+        height: 1024
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e63a754466f030b0800000000000000
+      internalID: -5750825813629323544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bowl
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 53
+        width: 198
+        height: 532
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d5637b79f8012b70800000000000000
+      internalID: 8872382608507626968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cereal
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 53
+        width: 187
+        height: 532
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f6c974d60b2fa6b0800000000000000
+      internalID: -5282956529547753744
       vertices: []
       indices: 
       edges: []
