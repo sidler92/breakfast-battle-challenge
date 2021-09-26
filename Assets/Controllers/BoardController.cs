@@ -89,17 +89,6 @@ public class BoardController : MonoBehaviour
         board = null;
     }
 
-
-    public void CheckClearsForAllTiles()
-    {
-        HashSet<Tile> tiles = new HashSet<Tile>();
-        foreach (Tile tile in board.tiles)
-        {
-            tiles.Add(tile);
-        }
-        board.CheckAndClearTiles(tiles);
-    }
-
     public void SaveBoardToCSV()
     {
         string path = "Assets/BoardSaves/test.txt";
