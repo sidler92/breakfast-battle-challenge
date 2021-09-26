@@ -12,7 +12,6 @@ public class TileSpriteController : MonoBehaviour
     public Sprite circleSprite;
     public Sprite crossSprite;
 
-
     Dictionary<Tile, GameObject> tileGameObjectMap;    
 
     Board board { get { return BoardController.Instance.board; } }
@@ -26,10 +25,16 @@ public class TileSpriteController : MonoBehaviour
         RegisterCallbackFunctions();
     }
 
+    void LateUpdate()
+    {
+        this.transform.localPosition = new Vector3(0, board.RowOffset);
+    }
+
     void RegisterCallbackFunctions()
     {
         board.RegisterTileChanged(OnTileChanged);
         board.RegisterTilesToBeClearedChanged(OnTilesToBeClearedChanged);
+        board.RegisterAddRow(OnAddRow);
     }
 
     void createTileGameObjectMap()
@@ -41,20 +46,14 @@ public class TileSpriteController : MonoBehaviour
         // create a gameobject for each of our tiles on the board, so they show visually
         for (int x = 0; x < board.Width; x++)
         {
-            for (int y = 0; y < board.Height; y++)
+            foreach (Row row in board.newTiles)
             {
                 // get tile data
-                Tile tile_data = board.GetTileAt(x, y);
+                Tile tile_data = row.GetTileAt(x);
 
-                // create and add go to our scene
-                GameObject tile_go = new GameObject();
+                // create and add go to our scene - add to gameobjectmap
+                GameObject tile_go = AddAndCreateGameobject(tile_data);
 
-                // add tile/GO pair to dict
-                tileGameObjectMap.Add(tile_data, tile_go);
-
-                tile_go.name = "Tile_" + x + "_" + y;
-                tile_go.transform.SetParent(this.transform, true);
-                tile_go.transform.localPosition = new Vector3(tile_data.X, tile_data.Y, 0);
 
                 // set the right sprite depending on type
                 SetSprite(tile_data, tile_go);
@@ -63,7 +62,39 @@ public class TileSpriteController : MonoBehaviour
 
                 OnTileChanged(tile_data); //callback
             }
+
+            /*for (int y = -1; y < board.Height; y++)
+            {
+                // get tile data
+                Tile tile_data = board.GetTileAt(x, y);
+
+                // create and add go to our scene - add to gameobjectmap
+                GameObject tile_go = AddAndCreateGameobject(tile_data);
+                
+
+                // set the right sprite depending on type
+                SetSprite(tile_data, tile_go);
+
+
+
+                OnTileChanged(tile_data); //callback
+            }*/
         }
+    }
+
+    public GameObject AddAndCreateGameobject(Tile tile_data)
+    {
+        // create and add go to our scene
+        GameObject tile_go = new GameObject();
+
+        // add tile/GO pair to dict
+        tileGameObjectMap.Add(tile_data, tile_go);
+
+        tile_go.name = "Tile_" + tile_data.X + "_" + tile_data.Y;
+        tile_go.transform.SetParent(this.transform, true);
+        tile_go.transform.localPosition = new Vector3(tile_data.X, tile_data.Y, 0);
+
+        return tile_go;
     }
 
     void OnTilesToBeClearedChanged(HashSet<Tile> tilesToBeCleared)
@@ -93,7 +124,33 @@ public class TileSpriteController : MonoBehaviour
             return;
         }
 
+        // update position
+        tile_go.transform.localPosition = new Vector3(tile_data.X, tile_data.Y);
+        // update sprites
         SetSprite(tile_data, tile_go);
+    }
+
+    void OnAddRow(Row row)
+    {
+        Debug.Log("Adding new row");
+        // add row to tilegameobject map
+        foreach (Tile tile_data in row.tiles)
+        {            
+            // create and add go to our scene - add to gameobjectmap
+            GameObject tile_go = AddAndCreateGameobject(tile_data);
+
+            // set the right sprite depending on type
+            SetSprite(tile_data, tile_go);
+
+            OnTileChanged(tile_data); //callback
+        }
+
+        Debug.Log(" on tile changed for every tile");
+        // Update all tile_go
+        foreach (var item in tileGameObjectMap)
+        {
+            OnTileChanged(item.Key);
+        }
     }
 
 
@@ -138,6 +195,11 @@ public class TileSpriteController : MonoBehaviour
             default:
                 Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
                 break;
+        }
+
+        if(tile_data.Y < 0)
+        {
+            sr.color = new Color(0.2f, 0.2f, 0.2f, 1);
         }
     }
 

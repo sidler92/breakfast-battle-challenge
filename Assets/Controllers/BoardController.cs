@@ -44,6 +44,10 @@ public class BoardController : MonoBehaviour
         currentPointText.text = ("currentclearPoints: " + board.CurrentClearPoints.ToString());
 
         timerText.text = ("ComboTimer: " + ComboTimer.ToString());
+
+        // only if game is not over
+        if(!board.IsGameOver)
+            board.UpdateBoard(Time.deltaTime);
     } 
 
 

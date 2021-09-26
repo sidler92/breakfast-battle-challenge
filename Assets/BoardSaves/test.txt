@@ -7,6 +7,6 @@ Empty	Empty	Empty	Empty	Empty	Empty
 Empty	Empty	Empty	Empty	Empty	Empty	
 Empty	Empty	Empty	Empty	Empty	Empty	
 Empty	Empty	Empty	Empty	Empty	Empty	
-Empty	Empty	Empty	Empty	Empty	Empty	
-Empty	Empty	Empty	Empty	Empty	Empty	
-Empty	Empty	Empty	Empty	Empty	Empty	
+Empty	Empty	Empty	Empty	Cross	Empty	
+Empty	Empty	Empty	Star	Drop	Empty	
+Cross	Heart	Ring	Star	Heart	Empty	

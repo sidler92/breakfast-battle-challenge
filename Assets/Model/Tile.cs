@@ -24,6 +24,8 @@ public class Tile
     }
 
     public Board board { get; protected set; }
+    public Row row { get; protected set; }
+    public LinkedListNode<Row> rowNode { get; protected set; }
 
     public int X { get; protected set; }
     public int Y { get; protected set; }
@@ -39,6 +41,17 @@ public class Tile
         // FIXME dont use random here, board should manage how th tiles should look
         // Type = (TileType)(UnityEngine.Random.Range(0, 6) + 1);
     }
+    public Tile(Board board, Row row, int x, int y)
+    {
+        this.board = board;
+        this.row = row;
+        this.rowNode = rowNode;
+        X = x;
+        Y = y;
+
+        // FIXME dont use random here, board should manage how th tiles should look
+        // Type = (TileType)(UnityEngine.Random.Range(0, 6) + 1);
+    }
     public Tile(Board board, int x, int y, TileType type)
     {
         this.board = board;
@@ -46,6 +59,16 @@ public class Tile
         Y = y;
 
         Type = type;
+    }
+
+    public void SetRowNode(LinkedListNode<Row> rowNode)
+    {
+        this.rowNode = rowNode;
+    }
+
+    public void IncrementY()
+    {
+        Y++;
     }
 
     // return swapped tiles in has set for further manip
@@ -87,5 +110,28 @@ public class Tile
         cbTileChanged(t);        
     }
 
-
+    public Tile GetUpNeighbor()
+    {
+        if (rowNode.Next != null)
+            return rowNode.Next.Value.GetTileAt(this.X);
+        return null;
+    }
+    public Tile GetDownNeighbor()
+    {
+        if (rowNode.Previous != null)
+            return rowNode.Previous.Value.GetTileAt(this.X);
+        return null;
+    }
+    public Tile GetLeftNeighbor()
+    {
+        if (X > 0)
+            return row.GetTileAt(X - 1);
+        return null;
+    }
+    public Tile GetRightNeighbor()
+    {
+        if (X < row.Width - 1)
+            return row.GetTileAt(X + 1);
+        return null;
+    }
 }
