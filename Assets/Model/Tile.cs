@@ -25,6 +25,7 @@ public class Tile
 
     public Board board { get; protected set; }
     public Row row { get; protected set; }
+    public LinkedListNode<Row> rowNode { get; protected set; }
 
     public int X { get; protected set; }
     public int Y { get; protected set; }
@@ -44,6 +45,7 @@ public class Tile
     {
         this.board = board;
         this.row = row;
+        this.rowNode = rowNode;
         X = x;
         Y = y;
 
@@ -57,6 +59,11 @@ public class Tile
         Y = y;
 
         Type = type;
+    }
+
+    public void setRowNode(LinkedListNode<Row> rowNode)
+    {
+        this.rowNode = rowNode;
     }
 
     // return swapped tiles in has set for further manip
@@ -98,5 +105,28 @@ public class Tile
         cbTileChanged(t);        
     }
 
-
+    public Tile GetUpNeighbor()
+    {
+        if (rowNode.Next != null)
+            return rowNode.Next.Value.GetTileAt(this.X);
+        return null;
+    }
+    public Tile GetDownNeighbor()
+    {
+        if (rowNode.Previous != null)
+            return rowNode.Previous.Value.GetTileAt(this.X);
+        return null;
+    }
+    public Tile GetLeftNeighbor()
+    {
+        if (X > 0)
+            return row.GetTileAt(X - 1);
+        return null;
+    }
+    public Tile GetRightNeighbor()
+    {
+        if (X < row.Width - 1)
+            return row.GetTileAt(X + 1);
+        return null;
+    }
 }

@@ -8,6 +8,8 @@ public class Board
 {
     public Tile[,] tiles { get; protected set; }
 
+    public LinkedList<Row> newTiles { get; protected set; }
+
     public int CurrentClearPoints { get; protected set; }
 
     public Cursor cursor { get; protected set; }
@@ -69,7 +71,7 @@ public class Board
     {
         CreateBoard(width, height);
     }
-    void CreateBoard(int width, int height)
+    /*void CreateBoard(int width, int height)
     {
         CurrentClearPoints = 0;
 
@@ -85,9 +87,56 @@ public class Board
         ChangeTilesWithoutClears(6);
 
         cursor = new Cursor(this);
+    }*/
+
+    void CreateBoard(int width, int height)
+    {
+        CurrentClearPoints = 0;
+        Width = width;
+        Height = height;
+
+        TilesToBeCleared = new HashSet<Tile>();
+
+        InstantiateTiles(Width, Height);
+        Debug.Log("World created with " + (Width * Height) + " tiles");
+        Debug.Log("It has " + (newTiles.Count) + " rows");
+        Debug.Log("and the rows have " + (newTiles.First.Value.tiles.Length) + "tiles each");
+
+        ChangeTilesWithoutClears(6);
+
+        cursor = new Cursor(this);
     }
 
-    void ChangeTilesWithoutClears(int height)
+    void InstantiateTiles(int width, int height)
+    {
+        newTiles = new LinkedList<Row>();
+
+        for (int y = 0; y < Height; y++)
+        {
+            Row currentRow = new Row(Width, y, this);
+            LinkedListNode<Row> currentRowNode = newTiles.AddLast(currentRow);
+            currentRow.SetRowNode(currentRowNode);            
+            currentRow.RegisterTileChanged(OnTileChanged);
+        }
+        Debug.Log("New Tiles Instantiated");
+    }
+
+    /*void InstantiateTiles(int width, int height)
+    {
+        tiles = new Tile[Width, Height];
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                tiles[x, y] = new Tile(this, x, y);
+                tiles[x, y].RegisterTileChanged(OnTileChanged); //register callback ty
+            }
+        }
+        Debug.Log("Tiles Instantiated");
+    }*/
+
+    /*void ChangeTilesWithoutClears(int height)
     {
         // hash set of all valid types (without empty)
         HashSet<TileType> validTypes = new HashSet<TileType>(Enum.GetValues(typeof(TileType)).Cast<TileType>().ToList());
@@ -110,9 +159,53 @@ public class Board
                 tiles[x, y].Type = noDupeTypes.ElementAt(UnityEngine.Random.Range(0, noDupeTypes.Count));
             }
         }
+    }*/
+
+    void ChangeTilesWithoutClears(int height)
+    {
+        // hash set of all valid types (without empty)
+        HashSet<TileType> validTypes = new HashSet<TileType>(Enum.GetValues(typeof(TileType)).Cast<TileType>().ToList());
+        validTypes.Remove(TileType.Empty);
+        // hash set of all adjacent types
+        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
+
+        foreach (Row row in newTiles)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                // get all adjacent types
+                adjacentTypes.Clear();
+                adjacentTypes.UnionWith(AdjacentTypes(row.GetTileAt(x)));
+
+                // set type of current tile to one that is in valid types but not in adjacent types -> never have 2 of the same next to eachother
+                HashSet<TileType> noDupeTypes = new HashSet<TileType>();
+                noDupeTypes.UnionWith(validTypes);
+                noDupeTypes.ExceptWith(adjacentTypes);
+                row.GetTileAt(x).Type = noDupeTypes.ElementAt(UnityEngine.Random.Range(0, noDupeTypes.Count));
+            }
+        }
     }
 
     HashSet<TileType> AdjacentTypes(Tile tile)
+    {
+        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
+        int x = tile.X;
+        int y = tile.Y;
+
+        // TODO: maybe acces over tile -> go row up/down
+        if (x > 0)
+            adjacentTypes.Add(tile.GetLeftNeighbor().Type);
+        if (x < Width - 1)
+            adjacentTypes.Add(tile.GetRightNeighbor().Type);
+        if (y > 0)
+            adjacentTypes.Add(tile.GetDownNeighbor().Type);
+        if (y < Height - 1)
+            adjacentTypes.Add(tile.GetUpNeighbor().Type);
+
+        return adjacentTypes;
+    }
+
+    /*HashSet<TileType> AdjacentTypes(Tile tile)
     {
         HashSet<TileType> adjacentTypes = new HashSet<TileType>();
         int x = tile.X;
@@ -128,24 +221,9 @@ public class Board
             adjacentTypes.Add(GetTileAt(x, y + 1).Type);
 
         return adjacentTypes;
-    }
+    }*/
 
-    void InstantiateTiles(int width, int height)
-    {
-        tiles = new Tile[Width, Height];
-
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                tiles[x, y] = new Tile(this, x, y);
-                tiles[x, y].RegisterTileChanged(OnTileChanged); //register callback ty
-            }
-        }
-        Debug.Log("Tiles Instantiated");
-    }
-
-    public void ChangeTiles(TileType[,] types)
+    /*public void ChangeTiles(TileType[,] types)
     {
         for (int x = 0; x < Width; x++)
         {
@@ -153,6 +231,19 @@ public class Board
             {
                 tiles[x, y].Type = types[x, y];
             }
+        }
+    }*/
+
+    public void ChangeTiles(TileType[,] types)
+    {
+        int y = 0;
+        foreach (Row row in newTiles)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                row.GetTileAt(x).Type = types[x, y];
+            }
+            y++;
         }
     }
 
@@ -231,7 +322,7 @@ public class Board
     // ---------------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------------
 
-    public Tile GetTileAt(int x, int y)
+    /*public Tile GetTileAt(int x, int y)
     {
         if (x >= Width || x < 0 || y >= Height || y < 0)
         {
@@ -239,6 +330,11 @@ public class Board
         }
 
         return tiles[x, y];
+    }*/
+
+    public Tile GetTileAt(int x, int y)
+    {
+        newTiles.Find(y);
     }
 
 
