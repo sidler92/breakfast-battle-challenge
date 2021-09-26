@@ -28,7 +28,16 @@ public class Row
         // also set rownode to each tile
         foreach (Tile tile in tiles)
         {
-            tile.setRowNode(this.rowNode);
+            tile.SetRowNode(this.rowNode);
+        }
+    }
+
+    public void IncrementY()
+    {
+        Y++;
+        foreach (Tile tile in tiles)
+        {
+            tile.IncrementY();
         }
     }
     void InstantiateRow()
@@ -46,6 +55,17 @@ public class Row
         if (x >= 0 && x < Width)
             return tiles[x];
         return null;
+    }
+
+    public bool IsEmpty()
+    {
+        bool isEmpty = true;
+        foreach (Tile tile in tiles)
+        {
+            if (tile.Type != TileType.Empty)
+                isEmpty = false;
+        }
+        return isEmpty;
     }
 
 

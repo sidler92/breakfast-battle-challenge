@@ -61,9 +61,14 @@ public class Tile
         Type = type;
     }
 
-    public void setRowNode(LinkedListNode<Row> rowNode)
+    public void SetRowNode(LinkedListNode<Row> rowNode)
     {
         this.rowNode = rowNode;
+    }
+
+    public void IncrementY()
+    {
+        Y++;
     }
 
     // return swapped tiles in has set for further manip

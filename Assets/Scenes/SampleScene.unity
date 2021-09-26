@@ -205,6 +205,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &77284942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 77284943}
+  - component: {fileID: 77284944}
+  m_Layer: 0
+  m_Name: TileSpriteController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &77284943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77284942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1814952318}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &77284944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77284942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09419e3dffe812243919d7a26c47eea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emptySprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  dropSprite: {fileID: 939262187563644003, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
+  heartSprite: {fileID: 9185585472898743829, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
+  ringSprite: {fileID: 2720479706411175688, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
+  starSprite: {fileID: -2194825969800450990, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
+  circleSprite: {fileID: 2677172748580550846, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
+  crossSprite: {fileID: -6759184524320108173, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
 --- !u!1 &99276052
 GameObject:
   m_ObjectHideFlags: 0
@@ -5313,7 +5363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1277025154}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: -2.9, z: 0}
+  m_LocalPosition: {x: 0.04, y: -2.56, z: 0}
   m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children: []
   m_Father: {fileID: 1417215027}
@@ -5659,7 +5709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorSprite: {fileID: 2061115439749503078, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
-  goTilesAnchor: {fileID: 1814952317}
+  goTilesAnchor: {fileID: 77284942}
   cursorOffsetY: 0.6
 --- !u!1 &1404980332
 GameObject:
@@ -5672,7 +5722,7 @@ GameObject:
   - component: {fileID: 1404980333}
   - component: {fileID: 1404980334}
   m_Layer: 0
-  m_Name: BowlCornerTop (1)
+  m_Name: BowlCornerTopRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6948,7 +6998,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1814952318}
-  - component: {fileID: 1814952319}
   m_Layer: 0
   m_Name: TilesAnchor
   m_TagString: Untagged
@@ -6966,29 +7015,11 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.95, y: -5.5, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 77284943}
   m_Father: {fileID: 2039947169}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1814952319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814952317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09419e3dffe812243919d7a26c47eea3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emptySprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  dropSprite: {fileID: 939262187563644003, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
-  heartSprite: {fileID: 9185585472898743829, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
-  ringSprite: {fileID: 2720479706411175688, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
-  starSprite: {fileID: -2194825969800450990, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
-  circleSprite: {fileID: 2677172748580550846, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
-  crossSprite: {fileID: -6759184524320108173, guid: 98dfc6b7718c26e4d84a0d11058c56aa, type: 3}
 --- !u!1 &1827853392
 GameObject:
   m_ObjectHideFlags: 0
@@ -8180,7 +8211,7 @@ GameObject:
   - component: {fileID: 2112583836}
   - component: {fileID: 2112583837}
   m_Layer: 0
-  m_Name: BowlCornerTop
+  m_Name: BowlCornerTopLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

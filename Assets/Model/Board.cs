@@ -19,8 +19,10 @@ public class Board
     public float TimeSinceLastRow { get; protected set; }
     public float RowOffset
     {
-        get { return TimeSinceLastRow/10; }
+        get { return TimeSinceLastRow/5; }
     }
+
+    public bool IsGameOver { get; protected set; }
 
     public HashSet<Tile> TilesToBeCleared { get; protected set; }
 
@@ -61,6 +63,7 @@ public class Board
     Action cbClearStarted;
     Action<int> cbClearFinished;
     Action<HashSet<Tile>> cbTilesToBeClearedChanged;
+    Action<Row> cbAddRow;
 
     public Board(int width, int height)
     {
@@ -79,6 +82,7 @@ public class Board
 
     void CreateBoard(int width, int height)
     {
+        IsGameOver = false;
         CurrentClearPoints = 0;
         Width = width;
         Height = height;
@@ -90,6 +94,7 @@ public class Board
         Debug.Log("It has " + (newTiles.Count) + " rows");
         Debug.Log("and the rows have " + (newTiles.First.Value.tiles.Length) + "tiles each");
 
+        // 6 rows + the y=-1 row =)
         ChangeTilesWithoutClears(6);
 
         TimeSinceLastRow = 0;
@@ -101,7 +106,8 @@ public class Board
     {
         newTiles = new LinkedList<Row>();
 
-        for (int y = 0; y < Height; y++)
+        // from -1 , this is first row
+        for (int y = -1; y < Height; y++)
         {
             Row currentRow = new Row(Width, y, this);
             LinkedListNode<Row> currentRowNode = newTiles.AddLast(currentRow);
@@ -173,13 +179,86 @@ public class Board
     public void UpdateBoard(float deltaTime)
     {
         TimeSinceLastRow += deltaTime;
-        if(TimeSinceLastRow > 10f)
+        if(TimeSinceLastRow >= 5f)
         {
             TimeSinceLastRow = 0;
             // All tiles Y++
+            MoveAllTilesUp();
+            cursor.Y++;
             // add new row at y=-1
             // check if top row is empty -> if not it is probably game over
+            Row addedRow = AddNewRow();
+            // Add row to tileGameObjectMap - this call back will do that
+            OnAddRow(addedRow);
+            SetRowTypesValid(addedRow);
 
+            CheckTopRow();
+
+            // TODO: this value should be changed at the same time that the transform of GO is changed -> timing
+            // probably take out the onTileChanged when incrementing -> only do it after, but on "boardchanged"??
+            
+        }
+    }
+
+    public void CheckTopRow()
+    {
+        Row topRow = newTiles.Last.Value;
+        
+        if(topRow.IsEmpty())
+        {
+            Debug.Log("remove top row with y = " + topRow.Y);
+            newTiles.RemoveLast();
+            // remove top row
+            // also remove tiless from tileGameObjectMap? how? OnRowDestroyed?
+            Debug.Log("TOP ROW IS EMPTY all guddo");
+        }
+        else
+        {
+            Debug.Log("TOP ROW HAS TILES IN THERE you lost");
+
+            // GameOver!
+            IsGameOver = true;
+        }
+    }
+
+    public void MoveAllTilesUp()
+    {
+        foreach (Row row in newTiles)
+        {
+            row.IncrementY();
+        }
+    }
+
+    public Row AddNewRow()
+    {
+        Debug.Log("ADD ROW");
+        Row row = new Row(Width, -1, this);
+        LinkedListNode<Row> currentRowNode = newTiles.AddFirst(row);
+        row.SetRowNode(currentRowNode);
+        row.RegisterTileChanged(OnTileChanged);
+        return row;
+    }
+
+    public void SetRowTypesValid(Row row)
+    {
+        HashSet<TileType> validTypes = new HashSet<TileType>(Enum.GetValues(typeof(TileType)).Cast<TileType>().ToList());
+        validTypes.Remove(TileType.Empty);
+        // hash set of all adjacent types
+        HashSet<TileType> adjacentTypes = new HashSet<TileType>();
+        foreach (Tile tile in row.tiles)
+        {
+            // get left/right neighbor types
+            adjacentTypes.Clear();
+            if(tile.X > 0)
+                adjacentTypes.Add(tile.GetLeftNeighbor().Type);
+            if(tile.X < Width-1)
+                adjacentTypes.Add(tile.GetRightNeighbor().Type);
+
+            // set type of current tile to one that is in valid types but not in adjacent types -> never have 2 of the same next to eachother
+            HashSet<TileType> noDupeTypes = new HashSet<TileType>();
+            noDupeTypes.UnionWith(validTypes);
+            noDupeTypes.ExceptWith(adjacentTypes);
+            tile.Type = noDupeTypes.ElementAt(UnityEngine.Random.Range(0, noDupeTypes.Count));
         }
     }
 
@@ -218,6 +297,15 @@ public class Board
         cbTilesToBeClearedChanged += callbackfunc;
     }
 
+    public void RegisterAddRow(Action<Row> callbackfunc)
+    {
+        cbAddRow += callbackfunc;
+    }
+    public void UnregisterAddRow(Action<Row> callbackfunc)
+    {
+        cbAddRow -= callbackfunc;
+    }
+
     // gets called whenever ANY tile changes
     void OnTileChanged(Tile t)
     {
@@ -252,6 +340,13 @@ public class Board
             return;
 
         cbTilesToBeClearedChanged(TilesToBeCleared);
+    }
+
+    void OnAddRow(Row row)
+    {
+        if (cbAddRow == null)
+            return;
+        cbAddRow(row);
     }
 
     // ---------------------------------------------------------------------------------------------------

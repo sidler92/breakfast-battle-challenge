@@ -45,7 +45,9 @@ public class BoardController : MonoBehaviour
 
         timerText.text = ("ComboTimer: " + ComboTimer.ToString());
 
-        board.UpdateBoard(Time.deltaTime);
+        // only if game is not over
+        if(!board.IsGameOver)
+            board.UpdateBoard(Time.deltaTime);
     } 
 
 

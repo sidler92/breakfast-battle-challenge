@@ -46,8 +46,8 @@ public class Cursor
     public Cursor(Board board)
     {
         this.board = board;
-        X = (int)Mathf.Floor(board.Width / 2);
-        Y = (int)Mathf.Floor(board.Height / 2);
+        X = 3;
+        Y = 5;
         SetTiles();
     }
 
