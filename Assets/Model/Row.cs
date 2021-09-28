@@ -34,11 +34,11 @@ public class Row
 
     public void IncrementY()
     {
-        Y++;
+        Y++;        
         foreach (Tile tile in tiles)
         {
             tile.IncrementY();
-        }
+        }        
     }
     void InstantiateRow()
     {
@@ -55,6 +55,16 @@ public class Row
         if (x >= 0 && x < Width)
             return tiles[x];
         return null;
+    }
+
+    public HashSet<Tile> GetTilesAsHashSet()
+    {
+        HashSet<Tile> tilesSet = new HashSet<Tile>();
+        foreach (Tile tile in tiles)
+        {
+            tilesSet.Add(tile);
+        }
+        return tilesSet;
     }
 
     public bool IsEmpty()

@@ -185,6 +185,10 @@ public class Board
             // All tiles Y++
             MoveAllTilesUp();
             cursor.Y++;
+
+            // check first row (the one that should be now y==0 for clears
+            Row newZeroRow = newTiles.First.Value;
+                      
             // add new row at y=-1
             // check if top row is empty -> if not it is probably game over
             Row addedRow = AddNewRow();
@@ -194,9 +198,11 @@ public class Board
 
             CheckTopRow();
 
+            CheckAndClearTiles(newZeroRow.GetTilesAsHashSet());
+
             // TODO: this value should be changed at the same time that the transform of GO is changed -> timing
             // probably take out the onTileChanged when incrementing -> only do it after, but on "boardchanged"??
-            
+
         }
     }
 
