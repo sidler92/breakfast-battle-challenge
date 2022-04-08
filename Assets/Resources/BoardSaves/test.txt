@@ -1,0 +1,12 @@
+Empty	Empty	Empty	Empty	Empty	Empty	
+Empty	Empty	Empty	Empty	Empty	Empty	
+Empty	Empty	Empty	Empty	Empty	Empty	
+Empty	Empty	Empty	Empty	Empty	Empty	
+Empty	Empty	Empty	Empty	Empty	Empty	
+Circle	Heart	Ring	Cross	Drop	Circle	
+Drop	Circle	Drop	Circle	Heart	Ring	
+Ring	Cross	Heart	Cross	Ring	Drop	
+Cross	Drop	Star	Circle	Drop	Cross	
+Drop	Heart	Circle	Cross	Ring	Drop	
+Cross	Star	Ring	Drop	Star	Circle	
+Circle	Cross	Heart	Cross	Ring	Heart	

@@ -91,7 +91,7 @@ public class BoardController : MonoBehaviour
 
     public void SaveBoardToCSV()
     {
-        string path = "Assets/BoardSaves/test.txt";
+        string path = Application.persistentDataPath+"Assets/Resources/BoardSaves/test.txt";
         StreamWriter writer = new StreamWriter(path, false);
         
 
@@ -118,7 +118,7 @@ public class BoardController : MonoBehaviour
             // TODO: don't hard code it tyvm
             TileType[,] types = new TileType[6,12];
 
-            using StreamReader sr = new StreamReader("Assets/BoardSaves/test.txt");
+            using StreamReader sr = new StreamReader(Application.persistentDataPath + "Assets/Resources/BoardSaves/test.txt");
             string line;
 
             int y = 11;
